@@ -277,9 +277,10 @@ public abstract class SharedTreeModel<
     private final BufferedString _bs = new BufferedString(_buf, 0, 0);
     private int _pos = 0;
     @Override
-    public void go(int depth, boolean right) {
+    public boolean go(int depth, boolean right) {
       _buf[depth] = right ? (byte) 'R' : (byte) 'L';
       if (right) _pos = depth;
+      return true;
     }
     @Override
     public BufferedString terminate() {

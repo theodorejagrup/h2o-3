@@ -178,7 +178,7 @@ public abstract class SharedTreeMojoModel extends MojoModel {
     }
 
     public interface DecisionPathTracker<T> {
-        void go(int depth, boolean right);
+        boolean go(int depth, boolean right);
         T terminate();
     }
 
@@ -186,9 +186,10 @@ public abstract class SharedTreeMojoModel extends MojoModel {
         private final char[] _sb = new char[64];
         private int _pos = 0;
         @Override
-        public void go(int depth, boolean right) {
+        public boolean go(int depth, boolean right) {
             _sb[depth] = right ? 'R' : 'L';
             if (right) _pos = depth;
+            return true;
         }
         @Override
         public String terminate() {
@@ -202,7 +203,7 @@ public abstract class SharedTreeMojoModel extends MojoModel {
         long l = Double.doubleToRawLongBits(leafAssignment);
         for (int i = 0; i < 64; ++i) {
             boolean right = ((l>>i) & 0x1L) == 1;
-            tr.go(i, right);
+            if (! tr.go(i, right)) break;
         }
         return tr.terminate();
     }
